@@ -15,7 +15,7 @@ export default function HowItWorks() {
       ">
 
         <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
             How QueueFlow+ works for everyone
           </h2>
           <p className="text-gray-500 text-base max-w-md mx-auto leading-relaxed">

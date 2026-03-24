@@ -8,16 +8,22 @@ import More from "@/public/more.svg";
 export default function Hero() {
    return (
       <section
-         className="grid grid-cols-2 gap-24 place-items-center min-h-[calc(100vh-100px)] px-36 relative"
+         className="grid grid-cols-2 place-items-center min-h-[calc(100vh-100px)] px-36 relative gap-5"
       >
          {/* Left Content */}
          <div className="my-auto">
-            <p className="text-sm bg-gray-100 inline-block px-3 py-1 rounded-full">
+            <p className="text-base bg-gray-100 inline-block px-3 py-1 rounded-full">
                The Next Gen of Queue Management
             </p>
 
-            <h1 className="text-5xl font-bold mt-6">
-               Reimagining the <span className="text-blue-500" >Wait</span><span className="text-blue-500 font-extrabold"> Experience</span>
+            <h1 className="text-6xl font-bold mt-6">
+               Reimagining the
+               <span className="text-blue-500">
+                  &nbsp;Wait
+               </span>
+               <div className="text-blue-500 font-extrabold">
+                  Experience
+               </div>
             </h1>
 
             <p className="text-gray-600 mt-4">
@@ -44,7 +50,7 @@ export default function Hero() {
          </div>
 
          {/* Scroll Indicator */}
-         <div className="flex flex-col items-center mt-10 gap-1 absolute bottom-20 left-1/2 -translate-x-1/2">
+         <div className="flex flex-col items-center mt-10 gap-1 absolute bottom-10 left-1/2 -translate-x-1/2">
             <motion.span
             className="text-3xl"
             animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
@@ -55,7 +61,7 @@ export default function Hero() {
          </div>
 
          {/* Right Image */}
-         <div className="flex justify-center">
+         <div>
             <Image
             src={hospital}
             alt="Hospital Waiting Room"

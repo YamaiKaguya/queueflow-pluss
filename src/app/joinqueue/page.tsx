@@ -1,6 +1,6 @@
 "use client";
 
-import Joinqueue from "../../components/joinqueue/JoinQueuePage";
+import Joinqueue from "./JoinQueuePage";
 
 
 // import useAuth from "../hooks/useAuth";
