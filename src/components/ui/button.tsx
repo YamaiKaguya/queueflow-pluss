@@ -10,11 +10,34 @@ const buttonVariants = cva(
       variants: {
          variant: {
          custom: `
-         text-white text-[16px]
-         bg-(--primary-color) cursor-pointer border  shadow-xs 
-         hover:bg-accent
-         transition-all duration-300
-         dark:bg-input/30 dark:border-input dark:hover:bg-input/50`,
+            text-white text-[18px]
+            bg-[var(--primary-color)] cursor-pointer border shadow-xs
+            hover:bg-[var(--primary-color-dark)]
+            transition-all duration-300`,
+
+            scaledbutton: `
+            text-white
+            bg-[var(--primary-color)]
+            px-6 py-6 rounded-lg text-[18px]
+            hover:bg-[var(--primary-color-dark)] hover:scale-105 transition-transform duration-300 
+            
+            cursor-pointer`,
+            
+            scaledbutton_inverted: `
+            bg-white
+            px-6 py-6 rounded-lg text-[18px] text-[var(--primary-color)] border-1 border-[var(--primary-color)]
+            hover:scale-105 transition-transform duration-300 
+            
+            cursor-pointer`,
+
+         custombutton: `
+            bg-white text-[var(--primary-color)] px-6 py-6 rounded-lg font-semibold
+            hover:bg-[var(--primary-color)]/10 transition-transform duration-300 hover:scale-105 cursor-pointer`,
+         
+         buttonlink: `
+            text-black text-[18px] hover:text-[var(--primary-color-dark)] transition-all duration-300 cursor-pointer`,
+
+            
          default: "bg-primary text-primary-foreground hover:bg-primary/90",
          destructive:
             "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",

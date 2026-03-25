@@ -192,14 +192,14 @@ export default function SettingsPage() {
   const [passwordOpen, setPasswordOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
 
       <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col gap-10">
         {/* ── Page Header ── */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            Manage your personal information, preferences, and account security
+          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+          <p className="text-base text-gray-400 mt-1">
+            Manage your personal preferences, and account security
           </p>
         </div>
 

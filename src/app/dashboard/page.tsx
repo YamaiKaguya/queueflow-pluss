@@ -1,5 +1,8 @@
 "use client";
 
+
+import Dashboardc from "@/src/app/dashboard/_components/dashboard";
+
 // import useAuth from "../hooks/useAuth";
 // import Auth from "../../components/auth/auth";
 
@@ -30,6 +33,7 @@ export default function Dashboard() {
             {!loading && !user && (
                <div>DASHBOARD</div>
             )} */}
+            <Dashboardc/>
       </>
    )
-   }
+}

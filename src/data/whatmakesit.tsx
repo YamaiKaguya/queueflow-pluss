@@ -9,7 +9,7 @@ export const features = [
       </svg>
       ),
       title: "JOIN VIRTUALLY",
-      titleStyle: "uppercase tracking-widest text-sm font-bold",
+      titleStyle: "uppercase tracking-widest text-base font-bold",
       description: "Customer can join virtual queue via their devices without needing physical interaction.",
       hasImage: true,
       imageSrc: joinImg, 

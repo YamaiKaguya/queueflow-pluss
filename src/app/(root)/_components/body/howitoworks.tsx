@@ -8,17 +8,17 @@ import { steps } from "@/src/data/howitowrks";
 
 export default function HowItWorks() {
   return (
-    <section className="w-full bg-white py-20">
+    <section className="w-full bg-white py-40">
       <div className="   
-      max-w-6xl 
+      max-w-[85vw]
       mx-auto 
       ">
 
-        <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl font-bold text-gray-900 tracking-tight mb-8">
             How QueueFlow+ works for everyone
           </h2>
-          <p className="text-gray-500 text-base max-w-md mx-auto leading-relaxed">
+          <p className="text-gray-500 text-xl max-w-4xl mx-auto leading-relaxed">
             helps users wait smarter, staff manage the flow efficiently, and
             admins track insights to optimize service—all in one seamless system.
           </p>
@@ -43,6 +43,7 @@ interface Step {
   items: string[];
   highlighted: boolean;
 }
+
 function RoleCard({ step }: { step: Step }) {
   const ref = useRef<HTMLDivElement>(null); 
 
@@ -67,24 +68,23 @@ function RoleCard({ step }: { step: Step }) {
           />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">{step.role}</h3>
-          <p className="text-xs text-gray-400 mt-1 leading-relaxed max-w-50 mx-auto">
+          <h3 className="text-xl font-semibold text-gray-900">{step.role}</h3>
+          <p className="text-base text-gray-400 mt-1 leading-relaxed max-w-[40ch] mx-auto">
             {step.description}
           </p>
         </div>
       </div>
 
-      {/* Step Items */}
       <div className="flex flex-col gap-2">
         {step.items.map((item, i) => (
           <div
             key={i}
             className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 transition-transform duration-200 hover:translate-x-1"
           >
-            <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-semibold flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 rounded-full bg-blue-500 text-white text-base font-semibold flex items-center justify-center shrink-0">
               {i + 1}
             </span>
-            <span className="text-sm text-gray-700">{item}</span>
+            <span className="text-base text-gray-700">{item}</span>
           </div>
         ))}
       </div>
