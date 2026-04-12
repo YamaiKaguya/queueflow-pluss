@@ -1,12 +1,10 @@
 "use client"
 
-import {
-   StatsRow,
-   TicketCard,
-   LatestNews,
-   FacilityHours,
-   HelpCard,
-} from '@/src/features/dashboard/_components/_barrel/barrel'
+import { StatsRow }  from './_components/StatsRow'
+import { TicketCard }  from './_components/TicketCard'
+import { LatestNews }  from './_components/LatestNews'
+import { FacilityHours }  from './_components/FacilityHours'
+import { HelpCard } from './_components/HelpCard'
 
 import { QueueSkeleton } from '@/src/features/dashboard/_components/_subcomponents/QueueSkeleton'
 import { useCustomerQueue } from '@/src/features/dashboard/_hooks/useCustomQueue'
