@@ -265,3 +265,6 @@ function TicketCard({ ticket, actionLoading, onDone, onSkip, onNoShow }: TicketC
       </div>
    )
 }
+
+
+// !REMOVE THE DATA FROM QUEUEU DATABSE AND PUT ITTO HISTORY THEN DELETE IT FROM QUEUE DATABASE

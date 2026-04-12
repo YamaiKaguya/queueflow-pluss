@@ -9,7 +9,7 @@ export default function Logo() {
 
   return (
     <div
-      className="flex items-center gap-1.5 cursor-pointer select-none"
+      className="flex items-center gap-1.5 cursor-pointer select-none "
       onClick={() => router.push("/")}
     >
       <Image

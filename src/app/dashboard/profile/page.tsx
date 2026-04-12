@@ -1,9 +1,9 @@
-import JoinQueue from "@/src/features/joinqueue/page"
+import Profile from "@/src/features/profile/profile"
 
 export default function CustomerPage() {
    return (
       <main>
-         <JoinQueue />
+         <Profile />
       </main>
    )
 }

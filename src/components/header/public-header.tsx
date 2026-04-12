@@ -1,4 +1,3 @@
-// src/components/header/public-header.tsx
 'use client'
 
 import { useRouter } from "next/navigation"
@@ -7,59 +6,81 @@ import { Button } from "@/src/components/ui/button"
 import { useEffect, useState } from "react"
 import Logo from "../logo"
 
+
 type User = {
-email?: string
-id?: string
+   email?: string
+   id?: string
 } | null
 
 export function PublicHeader() {
-const router = useRouter()
-const supabase = createClient()
-const [user, setUser] = useState<User>(null)
+   const router = useRouter()
+   const supabase = createClient()
+   const [user, setUser] = useState<User>(null)
 
-useEffect(() => {
-   supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user ? { email: data.user.email, id: data.user.id } : null)
-   })
-}, [supabase])
+   useEffect(() => {
+      // Get initial user on mount
+      supabase.auth.getUser().then(({ data }) => {
+         setUser(data.user ? { email: data.user.email, id: data.user.id } : null)
+      })
 
-const logout = async () => {
-   await supabase.auth.signOut()
-   router.refresh()
-}
+      // Listen for auth state changes (login/logout)
+      const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+         if (session?.user) {
+         setUser({ email: session.user.email, id: session.user.id })
+         } else {
+         setUser(null)
+         }
+      })
+
+      // Cleanup listener on unmount
+      return () => {
+         listener.subscription.unsubscribe()
+      }
+   }, [supabase])
+
+   const logout = async () => {
+      await supabase.auth.signOut()
+      // No need to refresh, listener will update state automatically
+   }
 
    return (
       <header className="
          h-18
          flex items-center justify-between 
-         px-8 py-2 
+         px-8
          bg-white 
-         shadow-[0_4px_6px_-1px_rgba(114,114,114,0.10)]">
+         shadow-[0_4px_6px_-1px_rgba(114,114,114,0.10)]
+      ">
          <Logo />
-
          {user ? (
-         <div className="flex gap-3 align-center justify-center">
+         <div className="flex gap-3 items-center justify-center">
             <Button variant="buttonlink" onClick={() => router.push("/dashboard")}>
                Dashboard
             </Button>
             <button
-            
                onClick={logout}
-               className="bg-[var(--primary-color)] text-white text-[18px]
-               hover:bg-slate-200 text-sm px-4 py-2 rounded-xl"
+               className="
+               bg-[var(--primary-color)] text-white text-[18px]
+               hover:bg-[var(--primary-color-dark)] text-sm px-4 py-2 rounded-xl cursor-pointer
+               "
             >
                Logout
             </button>
          </div>
          ) : (
-         <div className="flex gap-2">
-            <Button variant="buttonlink" 
-            onClick={() => router.push("/auth/login")}>
+         <div className="flex gap-3 items-center justify-center">
+            <Button variant="buttonlink" onClick={() => router.push("/auth/login")}>
                Sign In
             </Button>
-            <Button onClick={() => router.push("/auth/sign-up")}>
+            <button
+               onClick={() => router.push("/auth/sign-up")}
+               className="
+               bg-[var(--primary-color)] text-white text-[18px]
+               hover:bg-[var(--primary-color-dark)] text-sm px-4 py-2 rounded-xl cursor-pointer
+               "
+            >
                Sign Up
-            </Button>
+            </button>
          </div>
          )}
       </header>

@@ -2,15 +2,15 @@ import { HelpCircle } from "lucide-react"
 
 export function HelpCard() {
    return (
-      <div className="bg-blue-500 rounded-[16px] p-5 text-white">
-         <div className="flex gap-2">
-            <HelpCircle size={20} className="mb-2.5" />
-            <p className="text-[15px] font-bold mb-1.5">
-                  Need assistance?
+      <div className="bg-blue-400 border border-blue-300 rounded-[16px] p-7 text-white">
+         <div className="flex items-center gap-2 mb-4">
+            <HelpCircle size={20} strokeWidth={2} className="text-white"/>
+            <p className="text-[12px] font-bold text-white tracking-wider">
+                  NEED ASSISTANCE?
             </p>
          </div>
 
-         <p className="text-[13px] opacity-85 leading-[1.5] mb-4">
+         <p className="text-sm mb-4">
                Having trouble with your queue number? Reach out to the front desk.
          </p>
 

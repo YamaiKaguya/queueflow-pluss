@@ -52,7 +52,7 @@ export const features = [
       ),
       title: "Real-time Position Tracking",
       titleStyle: "text-base font-semibold",
-      description: "Automatic SMS notifications keep users informed of their place in line without requiring them to stay on site.",
+      description: "Customers can track their live position in the queue and receive notifications as their turn approaches, allowing them to arrive just in time.",
       hasImage: false,
       span: "md:col-span-1 md:row-span-1",
    },
@@ -66,7 +66,7 @@ export const features = [
       ),
       title: "Control From The Dashboard",
       titleStyle: "text-base font-semibold",
-      description: "Automatic SMS notifications keep users informed of their place in line without requiring them to stay on site.",
+      description: "Manage queues through a centralized dashboard, adjust priorities, and handle urgent cases in real time.",
       hasImage: false,
       span: "md:col-span-1 md:row-span-1",
    }

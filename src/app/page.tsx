@@ -1,26 +1,10 @@
-import { 
-   Hero, 
-   WhatMakesIt, 
-   HowItWorks, 
-   FAQ, 
-   CTABanner, 
-   Footer, 
-   Copyright,} from "@/src/features/landing/_barrel/barrel";
-
-   import { PublicHeader } from "@/src/components/header/public-header"
-   
+import Landing from "@/src/features/landing/page";
 
 export default function Home() {
+
    return (
       <>
-         <PublicHeader />
-         <Hero />
-         <WhatMakesIt />
-         <HowItWorks />
-         <FAQ />
-         <CTABanner />
-         <Footer />
-         <Copyright/>
+         <Landing />
       </>
    )
 }

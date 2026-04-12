@@ -20,14 +20,14 @@ const pathname = usePathname()
             return (
                <Link key={href} href={href}>
                   <Button
-                     variant="buttonlink"
-                     className={
-                        isActive
-                        ? "text-[var(--primary-color-dark)]"
-                        : "text-gray-500 hover:text-gray-800"
-                     }
+                  variant="buttonlink"
+                  className={
+                     isActive
+                        ? "!text-[var(--primary-color-dark)]"
+                        : "!text-gray-500 hover:!text-gray-800"
+                  }
                   >
-                     {label}
+                  {label}
                   </Button>
                </Link>
             )
