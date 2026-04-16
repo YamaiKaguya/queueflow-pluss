@@ -2,8 +2,9 @@
 
 import hospital from "@/public/hospital.jpg";
 import Image from "next/image";
+
+import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
-import More from "@/public/more.svg";
 
 import { Button } from "@/src/components/ui/button";
 
@@ -52,7 +53,7 @@ export default function Hero() {
                animate={{ y: [0, 10, 0], opacity: [0.3, 1, 0.3] }}
                transition={{ repeat: Infinity, duration: 1.5, delay: 0 }}
                >
-                  <Image src={More} alt="Scroll Down" width={50} height={50} />
+                  <ChevronDown size={50} />
                </motion.span>
             </div>
          </div>

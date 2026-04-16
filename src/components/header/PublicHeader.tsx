@@ -1,50 +1,19 @@
 'use client'
 
 import { useRouter } from "next/navigation"
-import { createClient } from "@/src/lib/supabase/client"
 import { Button } from "@/src/components/ui/button"
-import { useEffect, useState } from "react"
 import Logo from "../logo"
+import { usePublicHeader } from "@/src/components/header/_hooks/usePublicHeader"
 
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 
-type User = {
-   email?: string
-   id?: string
-} | null
+interface PublicHeaderProps {
+   initialUser: User | null
+}
 
-export function PublicHeader() {
+export function PublicHeader({ initialUser }: PublicHeaderProps) {
+   const { user, logout } = usePublicHeader(initialUser)
    const router = useRouter()
-   const supabase = createClient()
-   const [user, setUser] = useState<User>(null)
-
-      useEffect(() => {
-         const loadUser = async () => {
-            const { data } = await supabase.auth.getUser()
-            const user = data.user
-
-            setUser(user ? { email: user.email, id: user.id } : null)
-         }
-
-         loadUser()
-
-         const { data: listener } = supabase.auth.onAuthStateChange(
-            (event: AuthChangeEvent, session: Session | null) => {
-               if (session?.user) {
-                  setUser({ email: session.user.email, id: session.user.id })
-               } else {
-                  setUser(null)
-               }
-            }
-         )
-
-         return () => listener.subscription.unsubscribe()
-      }, [supabase])
-
-   const logout = async () => {
-      await supabase.auth.signOut()
-      // No need to refresh, listener will update state automatically
-   }
 
    return (
       <header className="

@@ -18,7 +18,8 @@ type Notification = {
     const [notifs, setNotifs] = useState<Notification[]>([])
     const [userId, setUserId] = useState<string | null>(null)
 
-    // 🔹 Get current user
+
+    // GET USER
     useEffect(() => {
         const getUser = async () => {
             const { data } = await supabase.auth.getUser()
@@ -27,7 +28,8 @@ type Notification = {
         getUser()
     }, [])
 
-    // 🔹 Fetch initial notifications
+
+    // GET INITIAAL NOTIFICATIONS   
     useEffect(() => {
         if (!userId) return
 
@@ -36,7 +38,6 @@ type Notification = {
                 .from('notifications')
                 .select('*')
                 .eq('user_id', userId)
-                .order('created_at', { ascending: false })
 
             if (data) setNotifs(data)
         }
@@ -44,7 +45,8 @@ type Notification = {
         fetchNotifs()
     }, [userId])
 
-    // 🔹 Realtime listener
+
+    // OBSERVER
     useEffect(() => {
         if (!userId) return
 
@@ -69,7 +71,7 @@ type Notification = {
         }
     }, [userId])
 
-    // 🔹 Mark one as read
+    // MARK ONE
     const markOneRead = async (id: string) => {
         await supabase
             .from('notifications')
@@ -81,7 +83,7 @@ type Notification = {
         )
     }
 
-    // 🔹 Mark all as read
+    // MARK ALL
     const markAllRead = async () => {
         if (!userId) return
 

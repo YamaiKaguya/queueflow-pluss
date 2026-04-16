@@ -1,11 +1,10 @@
-"use client";
-
 import Image from "next/image";
 import { features } from "@/src/data/whatmakesit"; 
 
 function FeatureCard({feature}: {
    feature: (typeof features)[0];
-   }) {
+   // !WOOWOWOOWOWOOWOWO
+}) {
 
    return (
       <div
@@ -15,7 +14,7 @@ function FeatureCard({feature}: {
          rounded-2xl border border-gray-100 bg-white p-7
          flex flex-col gap-3 overflow-hidden relative
          transition-transform  duration-300 ease-out
-         hover:-translate-y-1 hover:shadow-lg cursor-pointer
+         hover:-translate-y-1 hover:shadow-lg cursor-pointer 
          `}
    >
       <span className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50 text-(--primary-color)">
@@ -65,7 +64,7 @@ export default function WhatMakesItWork() {
                </p>
             </div>
 
-            {/* Bento grid */}
+            {/* CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
                {features.map((feature, index) => (
                   <FeatureCard key={index} feature={feature}/>

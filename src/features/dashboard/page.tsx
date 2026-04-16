@@ -1,39 +1,25 @@
 "use client"
 
-import { StatsRow }  from './_components/StatsRow'
-import { TicketCard }  from './_components/TicketCard'
-import { LatestNews }  from './_components/LatestNews'
-import { FacilityHours }  from './_components/FacilityHours'
-import { HelpCard } from './_components/HelpCard'
-import { CurrentlyServingList } from './_components/QueueList'
+import { useRouter } from 'next/navigation'
 
+import {
+   StatsRow,
+   TicketCard,
+   LatestNews,
+   FacilityHours,
+   HelpCard,
+   CurrentlyServingList,
+   StatsRowSkeleton,
+   TicketCardSkeleton,
+   CurrentlyServingListSkeleton,
+} from "./_components/Index";
 
-import { QueueSkeleton } from './_components/_subcomponents/QueueSkeleton'
 import { useCustomerQueue } from './_hooks/useCustomQueue'
 
-
-import { useRouter } from 'next/navigation'
-   
 export default function DashBoard() {
-   const { ticket, setTicket, position, currentlyServing, queueStatus, confirmed, setConfirmed, loading } = useCustomerQueue()
+   const {allTickets, userTicket, setUserTicket, position, currentlyServing, queueStatus, confirmed, setConfirmed, loading } = useCustomerQueue()
 
-   const router = useRouter()
-
-   if (loading) return <QueueSkeleton />
-
-   if (!ticket)    return (
-      <div className="min-h-[calc(100vh-74px)]  bg-[var(--primary-background)] flex items-center justify-center p-6">
-         <div className="flex flex-col items-center justify-center gap-6 text-center max-w-md w-full">
-         <p className="text-xl text-gray-500">You have no active ticket.</p>
-         <button
-            onClick={() => router.push('/joinqueue')}
-            className="px-6 py-3 bg-[var(--primary-color-dark)] text-white rounded-lg font-medium hover:opacity-90 transition"
-         >
-            Join the Queue
-         </button>
-         </div>
-      </div>
-   )
+   const ticket = userTicket! 
 
    return (
       <div className="bg-[var(--primary-background)] p-15">
@@ -41,24 +27,29 @@ export default function DashBoard() {
 
             <div className="grid grid-cols-[1fr_340px] gap-10">
                <div className='flex flex-col gap-10'>
-                  <StatsRow
-                     peopleAhead={Math.max(0, position - 1)}
-                     estWaitMins={position * 3}
-                     queueStatus={queueStatus}
-                  />
-                  <TicketCard
-                     ticketNo={ticket.ticket_no}
-                     service={ticket.service}
-                     currentlyServing={currentlyServing}
-                     position={position}
-                     confirmed={confirmed}
-                     onConfirm={() => setConfirmed(true)}
-                     onLeave={() => {
-                        setTicket(null)
-                        setConfirmed(false)
-                     }}
-                  />
-                  <CurrentlyServingList/>
+                  {loading ? <StatsRowSkeleton /> : (
+                     <StatsRow
+                        peopleAhead={Math.max(0, position - 1)}
+                        estWaitMins={position * 3}
+                        queueStatus={queueStatus}
+                     />
+                  )}
+                  {loading ? <TicketCardSkeleton /> : (
+                     <TicketCard
+                        ticketNo={userTicket?.ticket_no ?? 0}
+                        service={ticket?.service ?? "N/A"}
+                        currentlyServing={currentlyServing}
+                        confirmed={confirmed}
+                        onConfirm={() => setConfirmed(true)}
+                        onLeave={() => {
+                           setUserTicket(null)
+                           setConfirmed(false)
+                        }}
+                     />
+                  )}
+                  {loading ? <CurrentlyServingListSkeleton /> : (
+                     <CurrentlyServingList allTickets={allTickets} />
+                  )}
                </div>
 
                <div className="flex flex-col gap-10">

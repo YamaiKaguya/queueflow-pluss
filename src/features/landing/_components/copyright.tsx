@@ -1,5 +1,7 @@
 import { Info, Globe, ShieldCheck } from "lucide-react"
 
+const links = [ "Privacy Policy", "Terms of Service", "Support"];
+
 export default function Footer() {
    return (
       <footer className="w-full bg-white border-t border-gray-100">
@@ -9,7 +11,7 @@ export default function Footer() {
                <span>2026 QueueFlow+. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-4 text-sm text-gray-400">
-               {["Privacy Policy", "Terms of Service", "Support"].map((item) => (
+               {links.map((item) => (
                   <a
                   key={item}
                   href="#"

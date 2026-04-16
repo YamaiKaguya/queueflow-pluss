@@ -9,7 +9,7 @@ const navItems = [
 { href: "/joinqueue", label: "Join Queue" },
 ]
 
-export function DashboardNav() {
+export default function DashboardNav() {
 const pathname = usePathname()
 
    return (

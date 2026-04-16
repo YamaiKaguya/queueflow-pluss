@@ -4,15 +4,16 @@ import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
 
 type QueueRow = {
-id: string
-ticket_no: number
-name: string | null
-user_id: string | null
-service: string | null
-status: string
-created_at: string
-called_at: string | null
-served_at: string | null
+   id: string
+   ticket_no: number
+   name: string | null
+   service: string | null
+   status: string
+   created_at: string
+   called_at: string | null
+   served_at: string | null
+   user_id: string | null
+   priority: boolean
 }
 
 type TicketInfo = { 
@@ -21,92 +22,131 @@ type TicketInfo = {
 }
 
 export function useCustomerQueue() {
-const router = useRouter()
-const supabase = useMemo(() => createClient(), [])
+   const router = useRouter()
+   const supabase = useMemo(() => createClient(), [])
 
-const [currentlyServing, setCurrentlyServing] = useState<number | null>(null)
-const [waitingCount, setWaitingCount]         = useState(0)
-const [ticket, setTicket]                     = useState<TicketInfo | null>(null)
-const [position, setPosition]                 = useState(0)
-const [confirmed, setConfirmed]               = useState(false)
-const [loading, setLoading]                   = useState(true)
+   const [currentlyServing, setCurrentlyServing] = useState<number | null>(null)
+   const [waitingCount, setWaitingCount]         = useState(0)
+   const [userTicket, setUserTicket]                     = useState<TicketInfo | null>(null)
+   const [position, setPosition]                 = useState(0)
+   const [confirmed, setConfirmed]               = useState(false)
+   const [loading, setLoading]                   = useState(true)
+   const [allTickets, setAllTickets]             = useState<QueueRow[]>([])
 
 
-useEffect(() => {
-   const fetchUserAndQueue = async () => {
-      try {
 
-      // FETCH USER AND QUEUE STATE IN PARALLEL
-      const [
-         { data: { user } },
-         { data: queueState }
-      ] = await Promise.all([
-         supabase.auth.getUser(),
-         supabase
-            .from('queue')
-            .select('ticket_no, status')
-            .in('status', ['serving', 'waiting'])
-            .order('ticket_no', { ascending: true }),
-      ])
+   const [queue, setQueueu]                     = useState<TicketInfo | null>(null)
 
-      // SERVING AND WAITING COUNT
-      if (queueState) {
-         // const serving = queueState.find((r) => r.status === 'serving')
-         const serving = queueState?.find((r: QueueRow) => r.status === 'serving')
-
-         if (serving) setCurrentlyServing(serving.ticket_no)
-
-         setWaitingCount(
-            queueState?.filter((r: QueueRow) => r.status === 'waiting').length ?? 0
-         )
-         
-      }
-
-      // CURRENT USER TICKET
-      const { data: existing } = await supabase
-         .from('queue')
-         .select('ticket_no, service, status')
-         .eq('user_id', user.id)
-         .in('status', ['waiting', 'serving'])
-         .single()
-
-      // IF HAS ACTIVE TICKET, SET IT AND CALCULATE POSITION
-      if (existing) {
-         setTicket({ ticket_no: existing.ticket_no, service: existing.service ?? '' })
-
-         const { count } = await supabase
-            .from('queue')
-            .select('*', { count: 'exact', head: true })
-            .eq('status', 'waiting')
-            .lt('ticket_no', existing.ticket_no)
-
-         setPosition((count ?? 0) + 1)
-      }
-      } finally {
-      setLoading(false)
-      }
-   }
-
-   void fetchUserAndQueue()
-}, [supabase, router])
-
-   // IF NO ACTIVE TICKET, NO NEED TO SUBSCRIBE
    useEffect(() => {
-      if (!ticket) return
+      const fetchUserAndQueue = async () => {
+         try {
+            // FETCH USER AND QUEUE STATE IN PARALLEL
+            const [
+               { data: { user } },
+               { data: queueState }
+            ] = await Promise.all([
+               supabase.auth.getUser(),
+               supabase
+                  .from('queue')
+                  .select('ticket_no, status')
+                  .in('status', ['serving', 'waiting'])
+                  .order('ticket_no', { ascending: true }),
+            ])
+
+            // SERVING AND WAITING COUNT
+            if (queueState) {
+               const serving = queueState?.find((r: QueueRow) => r.status === 'serving')
+
+               if (serving) setCurrentlyServing(serving.ticket_no)
+
+               setWaitingCount(
+                  queueState?.filter((r: QueueRow) => r.status === 'waiting').length ?? 0
+               )
+               
+            }
+
+            // CURRENT USER TICKET
+            const { data: existing } = await supabase
+               .from('queue')
+               .select('ticket_no, service, status')
+               .eq('user_id', user.id)
+               .in('status', ['waiting', 'serving'])
+               .single()
+
+            // IF HAS ACTIVE TICKET, SET IT AND CALCULATE POSITION
+            if (existing) {
+               setUserTicket({ ticket_no: existing.ticket_no, service: existing.service ?? '' })
+
+               const { count } = await supabase
+               .from('queue')
+               .select('*', { count: 'exact', head: true })
+               .eq('status', 'waiting')
+               .lt('ticket_no', existing.ticket_no)
+
+               setPosition((count ?? 0) + 1)
+
+               // GET ALL SERVING AND WAITING TICKETS THAT IS EQUAL TO CURRENT USER SERVICE
+               const { data: allTickets } = await supabase
+               .from('queue')
+               .select('*')
+               .eq('service', existing.service)
+               .in('status', ['waiting', 'serving'])
+               .order('ticket_no', { ascending: true })
+
+               if (allTickets) {
+                  setAllTickets(allTickets)
+               }
+            } 
+         } finally {
+            setLoading(false)
+         }
+      }
+
+      void fetchUserAndQueue()
+   }, [supabase, router])
+
+   // OBSERVER
+   useEffect(() => {
+      if (!userTicket) return
+
       const channel = supabase
          .channel('customer-tracker')
          .on(
          'postgres_changes',
-         { event: '*', schema: 'public', table: 'queue' },
+         { 
+            event: '*', 
+            schema: 'public', 
+            table: 'queue', 
+            filter: `service=eq.${userTicket.service}` 
+         },
          (payload: RealtimePostgresChangesPayload<QueueRow>) => {
             if (!payload.new || !('status' in payload.new)) return
+
+            // !UPDATE QUEUE
+            setAllTickets((prev) => {
+               const index = prev.findIndex(t => t.id === updated.id)
+               if (index === -1) return prev
+
+               const copy = [...prev]
+               copy[index] = {
+                  ...copy[index],
+                  ...updated
+               }
+
+               return copy
+            })
+
             const updated = payload.new
+
+            // !UPDATES POSITION AND CURRENTLY SERVING
             if (updated.status === 'serving') {
                setCurrentlyServing(updated.ticket_no)
-               if (updated.ticket_no < ticket.ticket_no) {
+               if (updated.ticket_no < userTicket.ticket_no) {
                setPosition((prev) => Math.max(0, prev - 1))
                }
             }
+
+            // !UPDATE WAIT COUNT
             if (updated.status === 'waiting') {
                setWaitingCount((prev) => prev + 1)
             }
@@ -114,12 +154,13 @@ useEffect(() => {
          )
          .subscribe()
       return () => { void supabase.removeChannel(channel) }
-   }, [supabase, ticket])
+   }, [supabase, userTicket])
 
    const queueStatus = waitingCount <= 3 ? 'Moving Fast' : waitingCount <= 8 ? 'Moderate' : 'Busy'
 
    return {
-      ticket, setTicket,
+      allTickets,
+      userTicket, setUserTicket,
       position,
       currentlyServing,
       queueStatus,

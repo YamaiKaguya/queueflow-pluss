@@ -19,7 +19,7 @@ type Props = {
    user: Claims
 }
 
-export function UserDropdown({ user }: Props) {
+export default function UserDropdown({ user }: Props) {
    const router = useRouter()
    const supabase = createClient()
 

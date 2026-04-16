@@ -1,8 +1,6 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "@/src/assets/style/globals.css";
-// import { Header } from "@/src/components/header/header"
 
 const nunito = Nunito({
    subsets: ["latin"],
@@ -10,20 +8,46 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-   metadataBase: new URL('http://localhost:3000'), 
+   metadataBase: new URL('http://localhost:3000'),
+
    title: "QueueFlow+",
-   description: "A queue management system built with Next.js and TypeScript.",
+   description: "A web based queue management system.",
+
+   applicationName: "QueueFlow+",
+
+   keywords: [
+      "Queue Management",
+      "Hospital Queue",
+      "QueueFlow+",
+   ],
+
    icons: {
-      icon: "/QueueFlow+.png",
-      shortcut: "/favicon.ico",
+      icon: [
+         { url: "/QueueFlow+.png", type: "image/png" },
+      ],
    },
-openGraph: {
+
+   openGraph: {
       title: "QueueFlow+",
-      description: "A queue management system built with Next.js and TypeScript.",
-      images: ["/QueueFlow+.png"],
+      description: "A web based queue management system",
+      url: "http://localhost:3000",
+      siteName: "QueueFlow+",
+      images: [
+         {
+            url: "/QueueFlow+.png",
+            width: 1200,
+            height: 630,
+         },
+      ],
+      locale: "en_US",
+      type: "website",
+   },
+
+   robots: {
+      index: true,
+      follow: true,
    },
 };
-
 
 export default function RootLayout({ 
    children 
@@ -32,7 +56,7 @@ export default function RootLayout({
 }) {
    return (
       <html lang="en">
-         <body className={`${nunito.className} h-full antialiased`}>
+         <body className={`${nunito.className} h-full antialiased flex flex-col`}>
             {children}
          </body>
       </html>

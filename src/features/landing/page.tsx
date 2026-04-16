@@ -1,47 +1,35 @@
-"use client"
-
-import { motion, useScroll } from "motion/react"
+import { PublicHeader } from "@/src/components/header/PublicHeader"
+import { createClient } from "@/src/lib/supabase/server"
 
 import { 
+   ScrollIndicator,
    Hero, 
    WhatMakesIt, 
    HowItWorks, 
    FAQ, 
    CTABanner, 
    Footer, 
-   Copyright,} from "@/src/features/landing/_barrel/barrel";
+   Copyright
+} from "./_components/Index";
 
-   import { PublicHeader } from "@/src/components/header/public-header"
-   
+export default async function Landing() {
+   const supabase = await createClient()
 
-export default function Landing() {
-   const { scrollYProgress } = useScroll()
+   const {
+      data: { user }
+   } = await supabase.auth.getUser()
 
    return (
       <>
-         <motion.div
-            id="scroll-indicator"
-            style={{
-               scaleX: scrollYProgress,
-               position: "fixed",
-               zIndex: 9999,
-               top: 0,
-               left: 0,
-               right: 0,
-               height: 6,
-               originX: 0,
-               backgroundColor: "var(--primary-color)",
-            }}
-         />
-
-         <PublicHeader />
+         <PublicHeader initialUser={user}/>
+         <ScrollIndicator />
          <Hero />
          <WhatMakesIt />
          <HowItWorks />
          <FAQ />
          <CTABanner />
          <Footer />
-         <Copyright/>
+         <Copyright />
       </>
    )
 }

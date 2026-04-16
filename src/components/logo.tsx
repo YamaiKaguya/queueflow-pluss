@@ -1,5 +1,5 @@
-// src/components/header/_components/Logo.tsx
 "use client";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import logo from "@/public/QueueFlow+.png";

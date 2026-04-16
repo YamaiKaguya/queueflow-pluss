@@ -16,7 +16,7 @@ export default function JoinQueue() {
    if (ticket) return <TicketConfirmed {...ticket}/>
 
    return (
-      <div className="w-full min-h-content bg-gray-50 py-12">
+      <div className="w-full h-auto bg-gray-50 py-12">
          <main className="w-[90vw] mx-auto space-y-8">
 
                <div className="flex items-center gap-3">
@@ -26,7 +26,8 @@ export default function JoinQueue() {
                   />
                   <button
                      className="
-                     bg-white text-black px-5 py-3 text-base border border-gray-200
+                     text-base
+                     bg-white text-black px-5 py-3 border border-gray-200
                      rounded-xl cursor-pointer 
                      hover:bg-[var(--primary-color)] hover:text-white transition-all transition-duration-300
                      "
@@ -38,7 +39,7 @@ export default function JoinQueue() {
                <div className="grid grid-cols-3 gap-6">
                   <div className="col-span-2 space-y-4">
                      <div className="flex justify-between items-center">
-                        <h2 className="font-semibold text-gray-800">Available Departments</h2>
+                        <h2 className="text-xl font-semibold text-gray-800">Available Departments</h2>
                         <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
                            {services.filter((s) => s.open).length} Active
                         </span>

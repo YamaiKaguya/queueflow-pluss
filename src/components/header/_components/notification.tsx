@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { Bell, CheckCircle } from "lucide-react"
+
 import { useNotifications } from "../_hooks/useNotification"
 
 export default function Notification() {
@@ -12,7 +13,7 @@ export default function Notification() {
 
    const unreadCount = notifs.filter((n) => !n.read).length
 
-   // 🔹 Close on outside click
+   // CLOSE ON OUTSIDE CLICK
    useEffect(() => {
       const handler = (e: MouseEvent) => {
          if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -25,7 +26,6 @@ export default function Notification() {
 
    return (
       <div className="relative" ref={ref}>
-         {/* 🔔 Trigger */}
          <button
             onClick={() => setOpen((o) => !o)}
             className="relative p-2 rounded-xl hover:bg-slate-100 transition cursor-pointer"
@@ -36,11 +36,10 @@ export default function Notification() {
             )}
          </button>
 
-         {/* 📦 Panel */}
          {open && (
-            <div className="absolute right-0 mt-3 w-84 p-2 rounded-2xl border border-gray-200 shadow-md bg-white z-50">
+            <div className="absolute right-0 mt-3 w-100 p-2 rounded-2xl border border-gray-200 shadow-md bg-white z-50">
 
-               {/* Header */}
+               {/* HEADER */}
                <div className="px-3 py-3 mb-1">
                   <p className="font-semibold text-base text-gray-900">Notifications</p>
                   <p className="text-sm text-gray-400">
@@ -50,7 +49,7 @@ export default function Notification() {
 
                <div className="border-t border-gray-100 mb-1" />
 
-               {/* Items */}
+               {/* NOTIFICATIONS */}
                {notifs.length === 0 && (
                   <div className="px-3 py-4 text-sm text-gray-400 text-center">
                      No notifications
@@ -82,7 +81,7 @@ export default function Notification() {
                   </div>
                ))}
 
-               {/* Footer */}
+               {/* MARK ALL AS READ */}
                {unreadCount > 0 && (
                   <>
                      <div className="border-t border-gray-100 mt-1 mb-1" />

@@ -1,41 +1,44 @@
+import { div } from "framer-motion/client"
+
 type Props = {
    ticketNo: number
    service: string
    currentlyServing: number | null
-   position: number
    confirmed: boolean
    onConfirm: () => void
    onLeave: () => void
 }
 
-export function TicketCard({ ticketNo, service, currentlyServing, position, confirmed, onConfirm, onLeave }: Props) {
+export function TicketCard({ticketNo, service, currentlyServing, confirmed, onConfirm, onLeave }: Props) {
    const prefix = service.charAt(0).toUpperCase()
+
    const formatted = (n: number) => `${prefix} – ${String(n).padStart(3, '0')}`
    const progressPct = currentlyServing
       ? Math.min(100, Math.round((currentlyServing / ticketNo) * 100))
       : 0
 
    return (
+
       <div className="bg-white rounded-[20px] p-9 shadow-sm">
          <div className="flex items-center justify-between mb-4">
-               <p className="text-xl font-bold text-slate-600 tracking-wide mb-2 ">
-                  YOUR QUEUE NUMBER
-               </p>
-               <div className="relative">
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1 absolute top-1.5 left-[-12px]"/>
-                  <p className="text-sm font-semibold text-slate-700 mb-2">Active</p>
-               </div>
+            <p className="text-xl font-bold text-slate-600 tracking-wide mb-2 ">
+               YOUR QUEUE NUMBER
+            </p>
+            <div className="relative">
+               <span
+               className={`inline-block w-2 h-2 rounded-full ${
+               ticketNo !== 0 ? 'bg-green-500' : 'bg-red-500'
+               } mr-1 absolute top-1.5 left-[-12px]`}
+            />
+            <p className="text-sm font-semibold text-slate-700 mb-2">
+               {ticketNo !== 0 ? "Active" : "Inactive"}
+            </p>
+            </div>
          </div>
-         <div className="h-40 flex items-center justify-around rounded-[16px] bg-blue-500 from-indigo-400 via-blue-400 to-sky-300 opacity-80">
+         <div className="h-50 flex items-center justify-around rounded-[16px] bg-blue-500 from-indigo-400 via-blue-400 to-sky-300 opacity-80">
             <p className="text-7xl font-extrabold text-white -tracking-[1px] m-0">
                {formatted(ticketNo)}
             </p>
-
-            {/* <div className="w-px h-20 bg-gray-200" /> */}
-
-            {/* <p className="text-7xl font-extrabold text-white -tracking-[1px] m-0">
-               {currentlyServing ? formatted(currentlyServing) : '—'}
-            </p> */}
          </div>
 
          {/* PROGRESS BAR */}

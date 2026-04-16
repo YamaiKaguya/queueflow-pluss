@@ -1,5 +1,5 @@
 
-export const steps = [
+export const Data = [
    {
       id: "users",
       role: "Users join and wait smart",

@@ -86,7 +86,7 @@ useEffect(() => {
    return () => { void supabase.removeChannel(channel) }
 }, [supabase])
 
-  // ── Actions ───────────────────────────────────────────────────────
+  // !── Actions ───────────────────────────────────────────────────────
 const callNext = async () => {
    const next = queue.find((t) => t.status === 'waiting')
    if (!next) return

@@ -1,15 +1,15 @@
 type Props = {
-service: Service
-isSelected: boolean
-onSelect: (id: string) => void
+   service: Service
+   isSelected: boolean
+   onSelect: (id: string) => void
 }
 
 type Service = {
-id: string
-label: string
-average: number
-open: boolean
-ahead: number
+   id: string
+   label: string
+   average: number
+   open: boolean
+   ahead: number
 }
 
 function getCongestion(ahead: number) {
@@ -35,7 +35,7 @@ export function ServiceCard({ service: s, isSelected, onSelect }: Props) {
          }`}
       >
          <div className="flex justify-between items-start mb-3">
-         <h3 className="font-semibold text-gray-800 text-sm">{s.label}</h3>
+         <h3 className="font-semibold text-gray-800 text-base">{s.label.toUpperCase()}</h3>
          {!isDisabled && (
             <div className="flex items-center gap-1">
                <span
@@ -47,21 +47,25 @@ export function ServiceCard({ service: s, isSelected, onSelect }: Props) {
          )}
          </div>
 
-         <p className="text-xs text-gray-500 mb-2">{s.open ? 'Open' : 'Closed'}</p>
 
          {s.open && (
-         <div className="text-xs text-gray-500 space-y-1">
-         <p>
-         Wait Time: 
-         <span className="font-medium text-gray-700">
-            {s.ahead && s.average ? ` ${s.ahead * Number(s.average)} mins` : ' N/A '}
-         </span>
-         </p>
-            <p>
-               Ahead: <span className="font-medium text-gray-700">{s.ahead}</span>
-            </p>
-
-         </div>
+            <div className="text-sm text-gray-700 space-y-1">
+               <p>
+                  Status: 
+               <span>
+                  {s.open ? ' Open ' : ' Closed '}
+               </span>
+               </p>
+               <p>
+                  Wait Time: 
+                  <span>
+                     {s.ahead && s.average ? ` ${s.ahead * Number(s.average)} mins` : ' N/A '}
+                  </span>
+               </p>
+               <p>
+                  People: <span>{s.ahead}</span>
+               </p>
+            </div>
          )}
       </button>
    )
