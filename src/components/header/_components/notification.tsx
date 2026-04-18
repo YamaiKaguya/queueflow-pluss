@@ -38,61 +38,62 @@ export default function Notification() {
 
          {open && (
             <div className="absolute right-0 mt-3 w-100 p-2 rounded-2xl border border-gray-200 shadow-md bg-white z-50">
-
-               {/* HEADER */}
-               <div className="px-3 py-3 mb-1">
-                  <p className="font-semibold text-base text-gray-900">Notifications</p>
-                  <p className="text-sm text-gray-400">
-                     {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
-                  </p>
-               </div>
-
-               <div className="border-t border-gray-100 mb-1" />
-
-               {/* NOTIFICATIONS */}
-               {notifs.length === 0 && (
-                  <div className="px-3 py-4 text-sm text-gray-400 text-center">
-                     No notifications
+                  {/* HEADER */}
+                  <div className="px-3 py-3 mb-1">
+                     <p className="font-semibold text-base text-gray-900">Notifications</p>
+                     <p className="text-sm text-gray-400">
+                        {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
+                     </p>
                   </div>
-               )}
 
-               {notifs.map((notif) => (
-                  <div
-                     key={notif.id}
-                     onClick={() => markOneRead(notif.id)}
-                     className={`flex items-start gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition ${
-                        !notif.read ? "bg-gray-50" : ""
-                     }`}
-                  >
-                     <CheckCircle size={18} className="text-gray-400" />
+               <div className="max-h-80 overflow-auto">
+                  <div className="border-t border-gray-100 mb-1 " />
 
-                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium leading-snug">
-                           {notif.message}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                           {new Date(notif.created_at).toLocaleString()}
-                        </p>
+                  {/* NOTIFICATIONS */}
+                  {notifs.length === 0 && (
+                     <div className="px-3 py-4 text-sm text-gray-400 text-center">
+                        No notifications
                      </div>
+                  )}
 
-                     {!notif.read && (
-                        <span className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />
-                     )}
-                  </div>
-               ))}
-
-               {/* MARK ALL AS READ */}
-               {unreadCount > 0 && (
-                  <>
-                     <div className="border-t border-gray-100 mt-1 mb-1" />
+                  {notifs.map((notif) => (
                      <div
-                        onClick={markAllRead}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-red-500 hover:bg-red-50 hover:text-red-600 transition"
+                        key={notif.id}
+                        onClick={() => markOneRead(notif.id)}
+                        className={`flex items-start gap-3 px-3  py-2.5 rounded-xl cursor-pointer text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition ${
+                           !notif.read ? "bg-gray-50" : ""
+                        }`}
                      >
-                        <span className="text-sm font-medium">Mark all as read</span>
+                        <CheckCircle size={18} className="text-gray-400" />
+
+                        <div className="flex-1 min-w-0">
+                           <p className="text-sm font-medium leading-snug">
+                              {notif.message}
+                           </p>
+                           <p className="text-xs text-gray-400 mt-0.5">
+                              {new Date(notif.created_at).toLocaleString()}
+                           </p>
+                        </div>
+
+                        {!notif.read && (
+                           <span className="w-2 h-2 bg-blue-500 rounded-full shrink-0 mt-1.5" />
+                        )}
                      </div>
-                  </>
-               )}
+                  ))}
+
+               </div>
+                {/* MARK ALL AS READ */}
+                  {unreadCount > 0 && (
+                     <>
+                        <div className="border-t border-gray-100 mt-1 mb-1" />
+                        <div
+                           onClick={markAllRead}
+                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer text-red-500 hover:bg-red-50 hover:text-red-600 transition"
+                        >
+                           <span className="text-sm font-medium">Mark all as read</span>
+                        </div>
+                     </>
+                  )}
             </div>
          )}
       </div>
