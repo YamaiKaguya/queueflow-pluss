@@ -22,8 +22,8 @@ export default function DashBoard() {
    return (
       <div className="bg-[var(--primary-background)] p-15">
          <main className="w-[90vw] mx-auto">
-
-            <div className="grid grid-cols-[1fr_340px] gap-10">
+{/* grid-cols-[1fr_340px] */}
+            <div className="grid  gap-10">
                <div className='flex flex-col gap-10'>
                   {loading ? <StatsRowSkeleton /> : (
                      <StatsRow
@@ -47,11 +47,11 @@ export default function DashBoard() {
                   )}
                </div>
 
-               <div className="flex flex-col gap-10">
+               {/* <div className="flex flex-col gap-10">
                   <LatestNews />
                   <FacilityHours />
                   <HelpCard />
-               </div>
+               </div> */}
             </div>
          </main>
       </div>

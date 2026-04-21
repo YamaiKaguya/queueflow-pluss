@@ -12,7 +12,7 @@ export function TicketConfirmed({ ticket_no, service, position }: Props) {
    const router = useRouter();
 
    return (
-      <main className="min-h-screen flex items-center justify-center bg-slate-50">
+      <main className="flex-1 flex items-center justify-center bg-slate-50">
             <div className="bg-white rounded-2xl shadow-lg p-14 w-full max-w-lg space-y-8 text-center">
                <h1 className="text-3xl font-bold text-gray-800">Your Ticket</h1>
                <div className="bg-blue-50 rounded-2xl p-10 space-y-4">

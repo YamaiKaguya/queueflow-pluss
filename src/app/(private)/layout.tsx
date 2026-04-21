@@ -6,9 +6,9 @@ children,
 children: React.ReactNode
 }) {
    return (
-      <>
+      <div className="min-h-screen antialiased flex flex-col">
          <PrivateHeader />
          {children}
-      </>
+      </div>
    )
 }

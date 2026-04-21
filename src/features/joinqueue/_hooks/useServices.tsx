@@ -16,10 +16,10 @@ export function useServices() {
    const [queueData, setQueueData] = useState<{ service: string }[] | null>(null)
    const [loadingServices, setLoadingServices] = useState(true)
 
-   const fetchServicesRaw = useCallback(async () => {
+   const fetchServices = async () => {
       const { data: services } = await supabase
          .from('services')
-         .select('id, label, average, open') 
+         .select('id, label, average, open')
          .order('label')
 
       const { data: queue } = await supabase
@@ -31,14 +31,16 @@ export function useServices() {
          services: services ?? [],
          queue: queue ?? [],
       }
-   }, [supabase])
+   }
 
    useEffect(() => {
       let mounted = true
 
       const load = async () => {
          setLoadingServices(true)
-         const { services, queue } = await fetchServicesRaw()
+
+         const { services, queue } = await fetchServices()
+
          if (!mounted) return
 
          setServicesData(services)
@@ -48,22 +50,16 @@ export function useServices() {
 
       void load()
 
-      const servicesChannel = supabase
+      const channel = supabase
          .channel('services-live')
          .on('postgres_changes', { event: '*', schema: 'public', table: 'services' }, () => void load())
          .subscribe()
 
-      const queueChannel = supabase
-         .channel('queue-live')
-         .on('postgres_changes', { event: '*', schema: 'public', table: 'queue' }, () => void load())
-         .subscribe()
-
       return () => {
          mounted = false
-         void supabase.removeChannel(servicesChannel)
-         void supabase.removeChannel(queueChannel)
+         void supabase.removeChannel(channel)
       }
-   }, [supabase, fetchServicesRaw])
+   }, [supabase])
 
    const services: ServiceUI[] = useMemo(() => {
       const aheadMap: Record<string, number> = {}
