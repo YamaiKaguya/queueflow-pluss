@@ -14,89 +14,88 @@ export default function SettingsPage() {
       <div className="min-h-screen bg-[#F5F5F3]">
          <div className="max-w-3xl mx-auto px-8 py-12 flex flex-col gap-12">
 
-         {/* Header */}
-         <div>
-            <h1 className="text-4xl font-bold text-gray-900">Settings</h1>
-            <p className="text-base text-gray-400 mt-2">Manage your personal preferences, and account security</p>
-         </div>
-
-         {/* Notification */}
-         <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-1.5">Notification</h2>
-            <p className="text-sm text-gray-400 mb-5">Control how and when we reach out to you regarding queue status</p>
-            <div className="bg-white border border-gray-100 rounded-2xl divide-y divide-gray-100">
-               <SettingRow
-                  icon={<Mail size={22} className="text-gray-500" />}
-                  label="Email Reminders"
-                  desc="Appointment details and receipt summaries"
-                  enabled={emailReminders}
-                  onToggle={() => setEmailReminders(!emailReminders)}
-               />
-               <SettingRow
-                  icon={<Smartphone size={22} className="text-gray-500" />}
-                  label="SMS Alert"
-                  desc="Real-time queue notifications and delay alerts"
-                  enabled={smsAlert}
-                  onToggle={() => setSmsAlert(!smsAlert)}
-               />
+            {/* Header */}
+            <div>
+               <h1 className="text-4xl font-bold text-gray-900">Settings</h1>
+               <p className="text-base text-gray-400 mt-2">Manage your personal preferences, and account security</p>
             </div>
-         </div>
 
-         {/* Security */}
-         <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-1.5">Security</h2>
-            <p className="text-sm text-gray-400 mb-5">Manage your password and authentication methods</p>
+            {/* Notification */}
+            <div>
+               <h2 className="text-xl font-bold text-gray-900 mb-1.5">Notification</h2>
+               <p className="text-sm text-gray-400 mb-5">Control how and when we reach out to you regarding queue status</p>
+               <div className="bg-white border border-gray-100 rounded-2xl divide-y divide-gray-100">
+                  <SettingRow
+                     icon={<Mail size={22} className="text-gray-500" />}
+                     label="Email Reminders"
+                     desc="Appointment details and receipt summaries"
+                     enabled={emailReminders}
+                     onToggle={() => setEmailReminders(!emailReminders)}
+                  />
+                  <SettingRow
+                     icon={<Smartphone size={22} className="text-gray-500" />}
+                     label="SMS Alert"
+                     desc="Real-time queue notifications and delay alerts"
+                     enabled={smsAlert}
+                     onToggle={() => setSmsAlert(!smsAlert)}
+                  />
+               </div>
+            </div>
 
-            <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+            {/* Security */}
+            <div>
+               <h2 className="text-xl font-bold text-gray-900 mb-1.5">Security</h2>
+               <p className="text-sm text-gray-400 mb-5">Manage your password and authentication methods</p>
 
-               {/* Header */}
-               <button 
-               title='Changepass'
-               onClick={() => setPasswordOpen(!passwordOpen)} 
-               className="w-full flex items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors"
-               >
-                  <div className="flex items-center gap-5">
-                     <div className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center">
-                     <Lock size={22} className="text-gray-500" />
+               <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+
+                  {/* Header */}
+                  <button 
+                  title='Changepass'
+                  onClick={() => setPasswordOpen(!passwordOpen)} 
+                  className="w-full flex items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                     <div className="flex items-center gap-5">
+                        <div className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <Lock size={22} className="text-gray-500" />
+                        </div>
+                        <div className="text-left">
+                        <p className="text-base font-semibold text-gray-800">Change Password</p>
+                        <p className="text-sm text-gray-400 mt-0.5">Last change 3 months ago</p>
+                        </div>
                      </div>
-                     <div className="text-left">
-                     <p className="text-base font-semibold text-gray-800">Change Password</p>
-                     <p className="text-sm text-gray-400 mt-0.5">Last change 3 months ago</p>
-                     </div>
+
+                     <ChevronRight 
+                        size={20} 
+                        className={`text-gray-400 transition-transform duration-300 ${
+                        passwordOpen ? "rotate-90" : ""
+                        }`}
+                     />
+                  </button>
+
+                  {/* Animated Panel */}
+                  <div
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                     passwordOpen ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                  >
+                     <ChangePasswordPanel onClose={() => setPasswordOpen(false)} />
                   </div>
 
-                  <ChevronRight 
-                     size={20} 
-                     className={`text-gray-400 transition-transform duration-300 ${
-                     passwordOpen ? "rotate-90" : ""
-                     }`}
-                  />
-               </button>
-
-               {/* Animated Panel */}
-               <div
-               className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                  passwordOpen ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"
-               }`}
-               >
-                  <ChangePasswordPanel onClose={() => setPasswordOpen(false)} />
                </div>
-
             </div>
-         </div>
 
-         {/* Session */}
-         <div className="flex items-center justify-between py-5 border-t border-gray-200">
-            <div>
-               <p className="text-base font-semibold text-gray-800">Session management</p>
-               <p className="text-sm text-gray-400 mt-0.5">Logged in as John Doe</p>
+            {/* Session */}
+            <div className="flex items-center justify-between py-5 border-t border-gray-200">
+               <div>
+                  <p className="text-base font-semibold text-gray-800">Session management</p>
+                  <p className="text-sm text-gray-400 mt-0.5">Logged in as John Doe</p>
+               </div>
+               <button title='Logout' className="flex items-center gap-2 bg-red-400 hover:bg-red-500 active:scale-95 text-white text-sm font-semibold px-6 py-3 rounded-xl cursor-pointer transition-all">
+                  <LogOut size={16} />
+                  Sign Out
+               </button>
             </div>
-            <button title='Logout' className="flex items-center gap-2 bg-red-400 hover:bg-red-500 active:scale-95 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all">
-               <LogOut size={16} />
-               Sign Out
-            </button>
-         </div>
-
          </div>
       </div>
    )

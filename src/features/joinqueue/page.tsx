@@ -52,8 +52,8 @@ export default function JoinQueue() {
                <div className="grid grid-cols-3 gap-6">
                   <div className="col-span-2 flex flex-col gap-5">
                      <div className="flex justify-between items-center">
-                        <h2 className="text-xl font-semibold text-gray-800">
-                           {query ? `Results for "${query}"` : 'Available Departments'}
+                        <h2 className="text-xl font-bold text-gray-600">
+                           {query ? `Results for "${query}"` : 'AVAILABLE DEPARTMENTS'}
                         </h2>
                         <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
                            {filteredServices.filter((s) => s.open).length} Active
@@ -73,8 +73,24 @@ export default function JoinQueue() {
                      hover:scrollbar-thumb-gray-300
                      ">
                      {loadingServices
-                        ? [...Array(6)].map((_, i) => (
-                           <div key={i} className="min-h-37 bg-gray-200 rounded-2xl animate-pulse" />
+                     ? [...Array(6)].map((_, i) => (
+                           <div
+                           key={i}
+                           className="p-5 rounded-2xl border bg-white animate-pulse space-y-4"
+                           >
+                           {/* Header */}
+                           <div className="flex justify-between items-start">
+                              <div className="h-6 w-32 bg-gray-200 rounded" />
+                              <div className="h-5 w-12 bg-gray-200 rounded-full" />
+                           </div>
+
+                           {/* Status */}
+                           <div className="space-y-2">
+                              <div className="h-4 w-24 bg-gray-200 rounded" />
+                              <div className="h-4 w-32 bg-gray-200 rounded" />
+                              <div className="h-4 w-20 bg-gray-200 rounded" />
+                           </div>
+                           </div>
                         ))
                         : filteredServices.length > 0
                            ? filteredServices.map((s) => (

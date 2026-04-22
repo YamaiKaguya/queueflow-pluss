@@ -47,7 +47,6 @@ export function ServiceCard({ service: s, isSelected, onSelect }: Props) {
          )}
          </div>
 
-
          {s.open && (
             <div className="text-sm text-gray-700 space-y-1">
                <p>

@@ -66,23 +66,60 @@ export function CurrentlyServingList({ allTickets }: Props) {
             CURRENTLY SERVING
          </h2>
 
-         {/* SERVING SECTION */}
-         <section className="mb-2">
-            {serving.length === 0 ? (
-               <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center text-gray-400 mb-2">
-                  No tickets being served.
-               </div>
-            ) : (
-               <div className="flex flex-col gap-1 mb-2">
-                  {serving.map(renderRow)}
-               </div>
-            )}
+      {/* SERVING */}
+<div className="mb-6">
+   {(serving.length > 0 || waiting.length > 0) && serving.length > 0 && (
+      <div className="flex items-center justify-between mb-3">
+         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            Serving
+         </h3>
+         <span className="text-xs text-gray-400">{serving.length}</span>
+      </div>
+   )}
 
-         {/* WAITING SECTION */}
-            <div className="flex flex-col gap-1">
-               {paginatedWaiting.map(renderRow)}
-            </div>
-         </section>
+   {serving.length === 0 && waiting.length === 0 ? (
+      <div className="bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center">
+         <p className="text-gray-500 font-medium">No queues at the moment</p>
+         <p className="text-sm text-gray-400 mt-1">
+            Everything is currently idle
+         </p>
+      </div>
+   ) : serving.length > 0 ? (
+      <div>
+         {serving.map(renderRow)}
+      </div>
+   ) : (
+      <div className="bg-gray-50 border border-dashed border-gray-200 rounded-xl p-4 text-center text-sm text-gray-400">
+         No one is currently being served
+      </div>
+   )}
+</div>
+
+{/* WAITING */}
+<div>
+   {waiting.length > 0 && (
+      <div className="flex items-center justify-between mb-3">
+         <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+            Waiting
+         </h3>
+         <span className="text-xs text-gray-400">{waiting.length}</span>
+      </div>
+   )}
+
+   {waiting.length === 0 ? (
+      serving.length > 0 ? (
+         <div className="bg-gray-50 border border-dashed border-gray-200 rounded-xl p-4 text-center text-sm text-gray-400">
+            No one is waiting
+         </div>
+      ) : null
+   ) : (
+      <div>
+         {waiting.map(renderRow)}
+      </div>
+   )}
+</div>
 
          {/* PAGINATION */}
          <div className="mx-auto mt-4 gap-2 flex">

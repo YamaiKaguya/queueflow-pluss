@@ -49,7 +49,7 @@ export async function updateSession(request: NextRequest) {
   //   return NextResponse.redirect(url)
   // }
 
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  if (!user && request.nextUrl.pathname.startsWith('/dashboard') || !user && request.nextUrl.pathname.startsWith('/joinqueue') || !user && request.nextUrl.pathname.startsWith('/profile') || !user && request.nextUrl.pathname.startsWith('/settings')) {
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
     return NextResponse.redirect(url)
