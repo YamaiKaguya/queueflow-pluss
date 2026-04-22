@@ -64,6 +64,7 @@ export default function JoinQueue() {
                      flex-col
                      gap-2
                      h-115
+                     
                      overflow-y-auto
                      pr-3
                      scrollbar-thin 
@@ -73,7 +74,7 @@ export default function JoinQueue() {
                      ">
                      {loadingServices
                         ? [...Array(6)].map((_, i) => (
-                           <div key={i} className="h-37 bg-gray-200 rounded-2xl animate-pulse" />
+                           <div key={i} className="min-h-37 bg-gray-200 rounded-2xl animate-pulse" />
                         ))
                         : filteredServices.length > 0
                            ? filteredServices.map((s) => (

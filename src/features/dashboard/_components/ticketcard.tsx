@@ -1,5 +1,3 @@
-import { div } from "framer-motion/client"
-
 type Props = {
    ticketNo: number
    service: string

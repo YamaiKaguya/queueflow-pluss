@@ -38,11 +38,10 @@ function StatusBadge({ status }: { status: Status }) {
 
 export default function VisitHistory() {
     return (
-        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center gap-2.5 px-6 py-5 border-b border-gray-100">
-                <History size={15} className="text-blue-500" />
-                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700">
+        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden ">
+            <div className="flex items-center gap-2.5 px-9 py-9 border-b border-gray-100">
+                <History size={26} strokeWidth={1} className="text-blue-500"/>
+                <h3 className="text-xl font-bold uppercase tracking-wider text-gray-700">
                     Recent Visit History
                 </h3>
             </div>
@@ -50,19 +49,19 @@ export default function VisitHistory() {
             {/* Table */}
             <table className="w-full text-sm">
                 <thead>
-                    <tr className="border-b border-gray-100">
+                    <tr className="border-b border-gray-100 ">
                         {['Department', 'Visit Date', 'Entry Type', 'Status'].map((col) => (
-                            <th key={col} className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
+                            <th key={col} className="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-400">
                                 {col}
                             </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {visits.map((v, i) => (
+                    {visits.map((v) => (
                         <tr
                             key={v.id}
-                            className={`hover:bg-gray-50 transition-colors ${i !== visits.length - 1 ? 'border-b border-gray-100' : ''}`}
+                            className={"hover:bg-gray-50 transition-colors text-center"}
                         >
                             <td className="px-6 py-4 font-bold text-gray-800 uppercase tracking-wide text-xs">
                                 {v.department}
@@ -86,7 +85,7 @@ export default function VisitHistory() {
             </table>
 
             {/* Footer */}
-            <div className="px-6 py-3.5 border-t border-gray-100">
+            <div className="px-6 py-3.5 border-t text-center border-gray-100">
                 <p className="text-xs text-gray-400">{visits.length} records found</p>
             </div>
         </div>
