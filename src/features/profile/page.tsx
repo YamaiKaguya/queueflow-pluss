@@ -5,19 +5,9 @@ import PatientProfile from '@/src/features/profile/_components/Profile'
 import VisitHistory from '@/src/features/profile/_components/History'
 import { useProfile } from './_hooks/useProfile'
 
-import Skeleton  from "./_components/ProfilePageSkeleton"
 
 
 export default function ProfilePage() {
-   const { profile, loading, error, retrieveData } = useProfile()
-
-   useEffect(() => {
-      retrieveData()
-   }, [retrieveData])
-
-   if (loading) return <Skeleton/>
-   if (error) return <p className="p-8 text-red-500">{error}</p>
-   if (!profile) return <p className="p-8">No profile found</p>
 
    return (
       <div className="min-h-screen bg-[#F5F5F3] px-8 py-12">
@@ -29,12 +19,8 @@ export default function ProfilePage() {
                   Manage your personal information, and view history
                </p>
             </div>
-
-            {/* 👇 PASS PROFILE HERE */}
-            <PatientProfile profile={profile} />
-
+            <PatientProfile/>
             <VisitHistory />
-
          </div>
       </div>
    )

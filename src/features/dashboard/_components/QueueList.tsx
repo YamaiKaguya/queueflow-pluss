@@ -30,7 +30,7 @@ export function CurrentlyServingList({ allTickets }: Props) {
 
    const start = page * PAGE_SIZE
    const end = start + PAGE_SIZE
-   const paginatedWaiting = waiting.slice(start, end)
+   // const paginatedWaiting = waiting.slice(start, end)
 
    const hasNext = end < waiting.length
    const hasPrev = page > 0
@@ -66,15 +66,14 @@ export function CurrentlyServingList({ allTickets }: Props) {
             CURRENTLY SERVING
          </h2>
 
-         {/* SERVING */}
+         {/* !SERVING */}
          <div className="mb-6">
             {(serving.length > 0 || waiting.length > 0) && serving.length > 0 && (
-               <div className="flex items-center justify-between mb-3">
+               <div className="mb-3">
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest flex items-center gap-2">
                      <span className="w-2 h-2 rounded-full bg-green-500"></span>
                      Serving
                   </h3>
-                  <span className="text-xs text-gray-400">{serving.length}</span>
                </div>
             )}
 
@@ -96,15 +95,14 @@ export function CurrentlyServingList({ allTickets }: Props) {
             )}
          </div>
 
-         {/* WAITING */}
+         {/* !WAITING */}
          <div>
             {waiting.length > 0 && (
-               <div className="flex items-center  justify-between mb-3">
+               <div className="mb-3">
                   <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-widest flex items-center gap-2">
                      <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
                      Waiting
                   </h3>
-                  <span className="text-xs text-gray-400">{waiting.length}</span>
                </div>
             )}
 
@@ -121,7 +119,7 @@ export function CurrentlyServingList({ allTickets }: Props) {
             )}
          </div>
 
-         {/* PAGINATION */}
+         {/* !PAGINATION */}
          <div className="mx-auto mt-4 gap-2 flex">
          <button
             title='Previous Page'   

@@ -1,4 +1,4 @@
-import Setting from "@/src/features/settings/SettingsPage";
+import Setting from "@/src/features/settings/Page";
 
 export default function Settings() {
    return (

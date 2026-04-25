@@ -1,15 +1,20 @@
 'use client'
-import { useState, useRef, useEffect } from "react"
-import { Bell, CheckCircle } from "lucide-react"
+import { useState, useRef, useEffect, useCallback } from "react"
+import { Bell, CheckCircle, Loader2 } from "lucide-react"
 import { useNotifications } from "../_hooks/useNotification"
 
 export default function Notification() {
    const [open, setOpen] = useState(false)
    const ref = useRef<HTMLDivElement>(null)
-   const { notifs, loading, markOneRead, markAllRead } = useNotifications()
+   const scrollRef = useRef<HTMLDivElement>(null)
+   const sentinelRef = useRef<HTMLDivElement>(null)
+
+   const { notifs, loading, loadingMore, hasMore, loadMore, markOneRead, markAllRead } =
+      useNotifications()
+
    const unreadCount = notifs.filter((n) => !n.read).length
 
-   // CLOSE ON OUTSIDE CLICK
+  // CLOSE ON OUTSIDE CLICK
    useEffect(() => {
       const handler = (e: MouseEvent) => {
          if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -19,6 +24,29 @@ export default function Notification() {
       document.addEventListener("mousedown", handler)
       return () => document.removeEventListener("mousedown", handler)
    }, [])
+
+  // INFINITE SCROLL — watch the sentinel div inside the scrollable list
+   const handleObserver = useCallback(
+      (entries: IntersectionObserverEntry[]) => {
+         if (entries[0].isIntersecting && hasMore && !loadingMore) {
+         loadMore()
+         }
+      },
+      [hasMore, loadingMore, loadMore]
+   )
+
+   useEffect(() => {
+      const sentinel = sentinelRef.current
+      if (!sentinel) return
+      const observer = new IntersectionObserver(handleObserver, {
+      // Observe relative to the scrollable container, not the viewport
+      root: scrollRef.current,
+      rootMargin: '0px',
+      threshold: 0.1,
+      })
+      observer.observe(sentinel)
+      return () => observer.disconnect()
+  }, [handleObserver, open]) // re-attach when dropdown opens
 
    return (
       <div className="relative" ref={ref}>
@@ -36,7 +64,7 @@ export default function Notification() {
          {/* DROPDOWN */}
          {open && (
          <div className="absolute right-0 mt-3 w-96 p-2 rounded-2xl border border-gray-200 shadow-md bg-white z-50">
-            
+
             {/* HEADER */}
             <div className="px-3 py-3 mb-1">
                <p className="font-semibold text-base text-gray-900">Notifications</p>
@@ -45,10 +73,11 @@ export default function Notification() {
                </p>
             </div>
 
-            <div className="max-h-80 overflow-auto">
+            {/* SCROLLABLE LIST */}
+            <div ref={scrollRef} className="max-h-80 overflow-auto">
                <div className="border-t border-gray-100 mb-1" />
 
-               {/* LOADING */}
+               {/* INITIAL LOADING */}
                {loading && (
                <div className="px-3 py-4 text-sm text-gray-400 text-center">
                   Loading...
@@ -76,9 +105,7 @@ export default function Notification() {
                      className={notif.read ? "text-gray-400" : "text-blue-500"}
                   />
                   <div className="flex-1 min-w-0">
-                     <p className="text-sm font-medium leading-snug">
-                     {notif.message}
-                     </p>
+                     <p className="text-sm font-medium leading-snug">{notif.message}</p>
                      <p className="text-xs text-gray-400 mt-0.5">
                      {new Date(notif.created_at).toLocaleString()}
                      </p>
@@ -88,6 +115,20 @@ export default function Notification() {
                   )}
                </button>
                ))}
+
+               {/* SCROLL SENTINEL — IntersectionObserver watches this */}
+               <div ref={sentinelRef} className="py-1">
+               {loadingMore && (
+                  <div className="flex justify-center py-2">
+                     <Loader2 size={16} className="text-gray-400 animate-spin" />
+                  </div>
+               )}
+               {!hasMore && !loading && notifs.length > 0 && (
+                  <p className="text-xs text-gray-300 text-center py-2">
+                     You're all caught up
+                  </p>
+               )}
+               </div>
             </div>
 
             {/* MARK ALL AS READ */}

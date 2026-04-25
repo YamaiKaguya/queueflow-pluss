@@ -19,8 +19,9 @@ export function useJoinQueue() {
    const [priority, setPriority] = useState(false)
    const [name, setName]         = useState('')
    const [email, setEmail]       = useState('')
+   const [type, setType]       = useState('')
 
-   // 🔁 Realtime position updates
+   // 🔁 WATCHER
    useEffect(() => {
       if (!ticket) return
 
@@ -75,7 +76,7 @@ export function useJoinQueue() {
             return
          }
 
-         // ✅ Insert into queue
+         // !INSERT QUEUE
          const { data, error: insertError } = await supabase
             .from('queue')
             .insert({
@@ -84,14 +85,15 @@ export function useJoinQueue() {
                status: 'waiting',
                user_id: user.id,
                priority,
-               email
+               email,
+               type: 'Online'
             })
             .select('ticket_no, service')
             .single()
 
          if (insertError) throw insertError
 
-         // 🔔 Insert notification (non-blocking)
+         // !INSERT NOTIFICATION
          const { error: notifError } = await supabase
             .from('notifications')
             .insert({
@@ -103,7 +105,7 @@ export function useJoinQueue() {
             console.error('Notification failed:', notifError)
          }
 
-         // 📊 Get position
+         // !GET POSITION
          const { count, error: countError } = await supabase
             .from('queue')
             .select('*', { count: 'exact', head: true })
@@ -113,7 +115,7 @@ export function useJoinQueue() {
 
          if (countError) throw countError
 
-         // 🎟️ Set ticket
+         // !SELECT TICKET
          setTicket({
             ticket_no: data.ticket_no,
             service: data.service,
@@ -134,6 +136,7 @@ export function useJoinQueue() {
       error, 
       service, setService, 
       priority, setPriority, 
+      type, setType,
       name, setName, 
       email, setEmail, 
       joinQueue
