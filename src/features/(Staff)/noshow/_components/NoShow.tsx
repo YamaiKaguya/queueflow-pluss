@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, ChevronLeft, ChevronRight, RotateCcw, UserX } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 
 type NoShowTicket = {
   id: string
@@ -22,9 +22,6 @@ type Props = {
   services: Service[]
   selectedId: string | null
   noShowCount: number
-  requeueCount: number
-  onRequeue: (id: string) => void
-  onDismiss: (id: string) => void
 }
 
 const ROWS_PER_PAGE = 10
@@ -34,9 +31,6 @@ export function NoShowPanel({
   services,
   selectedId,
   noShowCount,
-  requeueCount,
-  onRequeue,
-  onDismiss,
 }: Props) {
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
@@ -72,7 +66,7 @@ export function NoShowPanel({
 
       {/* HEADER */}
       <div className="flex items-start justify-between">
-        <div>
+        <div className='p-5'>
           <h1 className="text-3xl font-bold text-gray-900">
             {selectedService ? `${selectedService.label} Department` : 'All Departments'}
           </h1>
@@ -88,12 +82,6 @@ export function NoShowPanel({
               No-Show Count
             </p>
             <p className="text-4xl font-bold text-blue-500">{noShowCount}</p>
-          </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-4 text-center min-w-[130px]">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              Requeue
-            </p>
-            <p className="text-4xl font-bold text-blue-500">{requeueCount}</p>
           </div>
         </div>
       </div>
@@ -118,7 +106,7 @@ export function NoShowPanel({
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100">
-              {['Number', 'Patient Name', 'Department', 'Entry Type', 'Time Called', 'Actions'].map((h) => (
+              {['Number', 'Patient Name', 'Department', 'Entry Type', 'Time Called'].map((h) => (
                 <th
                   key={h}
                   className="text-left px-6 py-3.5 text-xs font-bold text-blue-500 uppercase tracking-wider"
@@ -131,7 +119,7 @@ export function NoShowPanel({
           <tbody>
             {paginated.length === 0 ? (
               <tr>
-                <td colSpan={6} className="text-center py-16 text-sm text-gray-300">
+                <td colSpan={5} className="text-center py-16 text-sm text-gray-300">
                   No no-show records found
                 </td>
               </tr>
@@ -148,24 +136,6 @@ export function NoShowPanel({
                   <td className="px-6 py-4 text-sm text-gray-600 uppercase">{t.service ?? '—'}</td>
                   <td className="px-6 py-4 text-sm text-gray-600 uppercase">{t.type}</td>
                   <td className="px-6 py-4 text-sm text-gray-600">{formatTime(t.called_at)}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => onRequeue(t.id)}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-blue-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors"
-                      >
-                        <RotateCcw size={11} />
-                        Requeue
-                      </button>
-                      <button
-                        onClick={() => onDismiss(t.id)}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-xl transition-colors"
-                      >
-                        <UserX size={11} />
-                        Dismiss
-                      </button>
-                    </div>
-                  </td>
                 </tr>
               ))
             )}

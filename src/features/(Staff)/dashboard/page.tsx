@@ -1,12 +1,15 @@
 'use client'
 
 import { useQueueContext } from '../dashboard/_context/QueueContext'
-import React, { useState } from "react"
+import { useStaffQueue } from './_hooks/useStaff'
+
+import { useState } from "react"
 
 import {
    Sidebar,
    WaitingQueue,
    ServingPanel,
+   RegistrationCard
 } from "./_components/Index"
 
 export default function StaffDashboard() {
@@ -19,14 +22,10 @@ export default function StaffDashboard() {
       updateStatus,
       services,
       hasServing
-   } = useQueueContext()
+   } = useStaffQueue()
 
-      const [selectedId, setSelectedId] = useState<string | null>(null)
-
+   const [selectedId, setSelectedId] = useState<string | null>(null)
    const selectedService = services.find((s) => s.id === selectedId) ?? null
-
-
-
    const normalizedSelected = selectedService?.label.toLowerCase().trim()
 
    const filteredWaiting = selectedService
@@ -65,8 +64,9 @@ export default function StaffDashboard() {
             onSelect={(id) => setSelectedId((prev) => (prev === id ? null : id))}
          />
 
-         <div className="flex-1 flex flex-col gap-6 rounded-lg">
-            <ServingPanel
+         <div className="flex-1 space-y-6">
+            <div className="grid grid-cols-3 grid-row-1 gap-6">
+               <ServingPanel
                filteredServing={filteredServing}
                filteredWaiting={filteredWaiting}
                filteredHasNext={filteredHasNext}
@@ -74,7 +74,12 @@ export default function StaffDashboard() {
                callNext={callNext}
                updateStatus={updateStatus}
                hasServing={hasServing}
-            />
+               />
+
+               <RegistrationCard
+               selectedService={selectedService}
+               />
+            </div>
 
             <WaitingQueue waiting={filteredWaiting} />
          </div>

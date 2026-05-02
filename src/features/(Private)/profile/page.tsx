@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
 import PatientProfile from '@/src/features/(Private)/profile/_components/Profile'
 import VisitHistory from '@/src/features/(Private)/profile/_components/History'
-import { useProfile } from './_hooks/useProfile'
 
 
 

@@ -1,13 +1,9 @@
-import PrivateHeader from "@/src/components/header/PrivateHeader"
+import UserHeader from "@/src/components/header/UserHeader"
 
-export default async function PrivateLayout({
-children,
-}: {
-children: React.ReactNode
-}) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
    return (
       <div className="min-h-screen antialiased flex flex-col">
-         <PrivateHeader />
+         <UserHeader />
          {children}
       </div>
    )

@@ -47,13 +47,13 @@ export default function SettingsPage() {
                            enabled={emailReminders}
                            onToggle={() => setEmailReminders(!emailReminders)}
                      />
-                     <SettingRow
+                     {/* <SettingRow
                            icon={<Smartphone size={22} className="text-gray-500" />}
                            label="SMS Alert"
                            desc="Real-time queue notifications and delay alerts"
                            enabled={smsAlert}
                            onToggle={() => setSmsAlert(!smsAlert)}
-                     />
+                     /> */}
                   </div>
                </div>
 

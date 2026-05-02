@@ -6,7 +6,7 @@ import { NoShowPanel } from './_components/NoShow'
 import Sidebar from './_components/Sidebar'
 
 export function NoShowPage() {
-    const { noShow, services, noShowCount, requeueCount, requeue, dismiss } = useNoShow()
+    const { noShow, services, noShowCount } = useNoShow()
     const [selectedId, setSelectedId] = useState<string | null>(null)
 
     return (
@@ -21,9 +21,6 @@ export function NoShowPage() {
                 services={services}
                 selectedId={selectedId}
                 noShowCount={noShowCount}
-                requeueCount={requeueCount}
-                onRequeue={requeue}
-                onDismiss={dismiss}
             />
         </main>
     )

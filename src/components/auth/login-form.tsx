@@ -18,19 +18,31 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
    const router = useRouter()
 
    const handleLogin = async (e: React.FormEvent) => {
-      e.preventDefault()
-      const supabase = createClient()
-      setIsLoading(true)
-      setError(null)
-      try {
-         const { error } = await supabase.auth.signInWithPassword({ email, password })
-         if (error) throw error
+   e.preventDefault()
+   const supabase = createClient()
+   setIsLoading(true)
+   setError(null)
+   try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) throw error
+
+      // get role after login
+      const { data } = await supabase.auth.getUser()
+      const role = data.user?.user_metadata?.role
+
+      if (role === 'staff') {
+         router.push('/staff/dashboard')
+      } else if (role === 'admin') {
+         router.push('/admin')
+      } else {
          router.push('/dashboard')
-      } catch (error: unknown) {
-         setError(error instanceof Error ? error.message : 'An error occurred')
-      } finally {
-         setIsLoading(false)
       }
+
+   } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An error occurred')
+   } finally {
+      setIsLoading(false)
+   }
    }
 
    const handleGoogleLogin = async () => {

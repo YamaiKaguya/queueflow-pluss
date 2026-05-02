@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { createClient } from '@/src/lib/supabase/client'
 import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
@@ -39,11 +39,8 @@ export function useNoShow() {
   const [noShow, setNoShow] = useState<QueueRow[]>([])
   const [services, setServices] = useState<ServiceRow[]>([])
   const [loading, setLoading] = useState(true)
-  const [actionLoading, setActionLoading] = useState<string | null>(null)
 
-  // ======================
   // FETCH NO-SHOW
-  // ======================
   useEffect(() => {
     const fetchNoShow = async () => {
       const { data, error } = await supabase
@@ -60,9 +57,7 @@ export function useNoShow() {
     fetchNoShow()
   }, [])
 
-  // ======================
   // FETCH SERVICES
-  // ======================
   useEffect(() => {
     const fetchServices = async () => {
       const { data, error } = await supabase
@@ -77,9 +72,7 @@ export function useNoShow() {
     fetchServices()
   }, [])
 
-  // ======================
   // REALTIME WATCHER
-  // ======================
   useEffect(() => {
     const channel = supabase
       .channel(`noshow-${crypto.randomUUID()}`)
@@ -99,7 +92,6 @@ export function useNoShow() {
             return
           }
 
-          // dismissed or requeued — remove from list
           setNoShow((prev) => prev.filter((t) => t.id !== updated.id))
         }
       )
@@ -110,49 +102,10 @@ export function useNoShow() {
     }
   }, [])
 
-  // ======================
-  // REQUEUE
-  // ======================
-  const requeue = useCallback(async (id: string) => {
-    setActionLoading(id)
-
-    const { error } = await supabase
-      .from('queue')
-      .update({ status: 'waiting' })
-      .eq('id', id)
-
-    if (error) console.error(error)
-    setActionLoading(null)
-  }, [])
-
-  // ======================
-  // DISMISS
-  // ======================
-  const dismiss = useCallback(async (id: string) => {
-    setActionLoading(id)
-
-    const { error } = await supabase
-      .from('queue')
-      .update({ status: 'dismissed' })
-      .eq('id', id)
-
-    if (error) console.error(error)
-    setActionLoading(null)
-  }, [])
-
-  // ======================
-  // DERIVED
-  // ======================
-  const requeueCount = noShow.filter((t) => t.status === 'waiting').length
-
   return {
     noShow,
     services,
     loading,
-    actionLoading,
     noShowCount: noShow.length,
-    requeueCount,
-    requeue,
-    dismiss,
   }
 }

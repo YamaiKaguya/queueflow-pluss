@@ -42,9 +42,7 @@ export function useStaffQueue() {
     const [loading, setLoading] = useState(true)
     const [actionLoading, setActionLoading] = useState<string | null>(null)
 
-    // ======================
     // FETCH ACTIVE QUEUE
-    // ======================
     useEffect(() => {
         const fetchQueue = async () => {
             const { data, error } = await supabase
@@ -61,9 +59,7 @@ export function useStaffQueue() {
         fetchQueue()
     }, [])
 
-    // ======================
     // FETCH NO-SHOW
-    // ======================
     useEffect(() => {
         const fetchNoShow = async () => {
             const { data, error } = await supabase
@@ -79,9 +75,7 @@ export function useStaffQueue() {
         fetchNoShow()
     }, [])
 
-    // ======================
     // FETCH SERVICES
-    // ======================
     useEffect(() => {
         const fetchServices = async () => {
             const { data, error } = await supabase
@@ -96,9 +90,7 @@ export function useStaffQueue() {
         fetchServices()
     }, [])
 
-    // ======================
     // REALTIME WATCHER
-    // ======================
     useEffect(() => {
         const channel = supabase
             .channel(`staff-${crypto.randomUUID()}`)
@@ -109,9 +101,7 @@ export function useStaffQueue() {
                     const updated = payload.new as QueueRow
                     if (!updated) return
 
-                    // ----------------------
                     // NO-SHOW
-                    // ----------------------
                     if (updated.status === 'no-show') {
                         setQueue(prev => prev.filter(t => t.id !== updated.id))
 
@@ -127,17 +117,13 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // ----------------------
                     // DISMISSED
-                    // ----------------------
                     if (updated.status === 'dismissed') {
                         setNoShow(prev => prev.filter(t => t.id !== updated.id))
                         return
                     }
 
-                    // ----------------------
                     // DONE / SKIPPED
-                    // ----------------------
                     if (updated.status === 'done' || updated.status === 'skipped') {
                         setQueue(prev =>
                             prev.map(t =>
@@ -154,9 +140,7 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // ----------------------
                     // WAITING (REQUEUE)
-                    // ----------------------
                     if (updated.status === 'waiting') {
                         setNoShow(prev =>
                             prev.filter(t => t.id !== updated.id)
@@ -176,9 +160,7 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // ----------------------
                     // DEFAULT
-                    // ----------------------
                     setQueue(prev => {
                         const exists = prev.find(t => t.id === updated.id)
                         if (exists) {
@@ -199,9 +181,7 @@ export function useStaffQueue() {
         }
     }, [])
 
-    // ======================
     // CALL NEXT
-    // ======================
     const callNext = useCallback(async () => {
         const next = queue.find(t => t.status === 'waiting')
         if (!next) return
@@ -221,9 +201,8 @@ export function useStaffQueue() {
         setActionLoading(null)
     }, [queue])
 
-    // ======================
+    
     // UPDATE STATUS
-    // ======================
     const updateStatus = useCallback(
         async (id: string, status: TicketStatus) => {
             setActionLoading(id)
@@ -231,15 +210,6 @@ export function useStaffQueue() {
             const target = queue.find(t => t.id === id)
 
             if (!target) {
-                setActionLoading(null)
-                return
-            }
-
-            // ----------------------
-            // ONLY ALLOW serving → no-show
-            // ----------------------
-            if (status === 'no-show' && target.status !== 'serving') {
-                console.warn('Only serving tickets can become no-show')
                 setActionLoading(null)
                 return
             }
@@ -266,9 +236,7 @@ export function useStaffQueue() {
         [queue]
     )
 
-    // ======================
     // DERIVED STATE
-    // ======================
     const serving = useMemo(
         () => queue.filter(t => t.status === 'serving'),
         [queue]
@@ -277,11 +245,6 @@ export function useStaffQueue() {
     const waiting = useMemo(
         () => queue.filter(t => t.status === 'waiting'),
         [queue]
-    )
-
-    const requeueCount = useMemo(
-        () => noShow.filter(t => t.status === 'waiting').length,
-        [noShow]
     )
 
     const hasServing = serving.length > 0
@@ -297,6 +260,5 @@ export function useStaffQueue() {
         hasServing,
         noShow,
         services,
-        requeueCount,
     }
 }

@@ -4,34 +4,37 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/src/components/ui/button"
 
-const navItems = [
-{ href: "/dashboard", label: "Dashboard" },
-{ href: "/joinqueue", label: "Join Queue" },
-]
+type NavItem = {
+  href: string
+  label: string
+}
 
-export default function DashboardNav() {
-const pathname = usePathname()
+type Props = {
+  items: NavItem[]
+}
 
-   return (
-      <nav className="flex items-center gap-1">
-         {navItems.map(({ href, label }) => {
-            const isActive = pathname.startsWith(href)
+export default function DashboardNav({ items }: Props) {
+  const pathname = usePathname()
 
-            return (
-               <Link key={href} href={href}>
-                  <Button
-                  variant="buttonlink"
-                  className={
-                     isActive
-                        ? "!text-[var(--primary-color-dark)]"
-                        : "!text-gray-500 hover:!text-gray-800"
-                  }
-                  >
-                  {label}
-                  </Button>
-               </Link>
-            )
-         })}
-      </nav>
-   )
+  return (
+    <nav className="flex items-center gap-1">
+      {items.map(({ href, label }) => {
+        const isActive = pathname.startsWith(href)
+        return (
+          <Link key={href} href={href}>
+            <Button
+              variant="buttonlink"
+              className={
+                isActive
+                  ? "!text-[var(--primary-color-dark)]"
+                  : "!text-gray-500 hover:!text-gray-800"
+              }
+            >
+              {label}
+            </Button>
+          </Link>
+        )
+      })}
+    </nav>
+  )
 }
