@@ -98,13 +98,22 @@ export function useStaffQueue() {
                 'postgres_changes',
                 { event: '*', schema: 'public', table: 'queue' },
                 (payload: RealtimePostgresChangesPayload<QueueRow>) => {
+
+                    // Handle DELETE (customer left queue via removeTicket)
+                    if (payload.eventType === 'DELETE') {
+                        const deleted = payload.old as Partial<QueueRow>
+                        if (!deleted?.id) return
+                        setQueue(prev => prev.filter(t => t.id !== deleted.id))
+                        setNoShow(prev => prev.filter(t => t.id !== deleted.id))
+                        return
+                    }
+
                     const updated = payload.new as QueueRow
                     if (!updated) return
 
                     // NO-SHOW
                     if (updated.status === 'no-show') {
                         setQueue(prev => prev.filter(t => t.id !== updated.id))
-
                         setNoShow(prev => {
                             const exists = prev.find(t => t.id === updated.id)
                             if (exists) {
@@ -130,22 +139,15 @@ export function useStaffQueue() {
                                 t.id === updated.id ? { ...t, ...updated } : t
                             )
                         )
-
                         setTimeout(() => {
-                            setQueue(prev =>
-                                prev.filter(t => t.id !== updated.id)
-                            )
+                            setQueue(prev => prev.filter(t => t.id !== updated.id))
                         }, 1500)
-
                         return
                     }
 
                     // WAITING (REQUEUE)
                     if (updated.status === 'waiting') {
-                        setNoShow(prev =>
-                            prev.filter(t => t.id !== updated.id)
-                        )
-
+                        setNoShow(prev => prev.filter(t => t.id !== updated.id))
                         setQueue(prev => {
                             const exists = prev.find(t => t.id === updated.id)
                             if (exists) {
@@ -160,7 +162,7 @@ export function useStaffQueue() {
                         return
                     }
 
-                    // DEFAULT
+                    // DEFAULT (INSERT / UPDATE → serving or other)
                     setQueue(prev => {
                         const exists = prev.find(t => t.id === updated.id)
                         if (exists) {
